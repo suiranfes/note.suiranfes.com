@@ -38,23 +38,3 @@
       )
   const pagePrev = pagesPrev[0]
   const pageNext = pagesNext[0]
-
-- let thsrc, thdims, thwidth, thheight
-
-if(page.meta.thumbnail)
-  -
-    thsrc = `${site.url.path}${page.meta.thumbnail.dir}/${page.meta.thumbnail.name}.720c.jpeg`
-    thdims = sizeOf( `dist${page.meta.thumbnail.dir}/${page.meta.thumbnail.name}.720c.jpeg` )
-    thwidth = thdims.width
-    thheight = thdims.height
-else
-  -
-    thsrc = `${site.url.path}${site.site_card_path}`
-    thdims = sizeOf( site.site_card_path.slice(1) )
-    thwidth = thdims.width
-    thheight = thdims.height
-  
-- 
-  let pdims = sizeOf( site.publisher_image_path.slice(1) )
-  let pwidth = pdims.width
-  let pheight = pdims.height

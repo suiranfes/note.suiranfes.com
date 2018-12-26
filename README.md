@@ -1,5 +1,5 @@
 # maqz
-サイトビルダー「maqz」です。な
+サイトビルダー「maqz」です。
 
 ## 使い方
 ### 1. GitHubからクローン
@@ -27,7 +27,18 @@
 ### ローカルで確認
 ローカルサーバーを立てて内容を事前に確認できます。`.config/debug-override.yml`で設定できます。
 
-`gulp local-server`を実行し、
+`gulp local-server`を実行し、緑色で表示されたlocalhostを含むアドレスにアクセスします。
+
+### 公開する
+GitHub Pagesを使って自分のサイトとして公開してみましょう。
+
+1. GitHubでリポジトリを作成します。
+2. `.config/default.yml`を編集し、自分のサイトの設定に合わせます。  
+3. `git remote add origin (git url).git`
+4. **独自ドメインにする場合、**`theme/static`に`CNAME`という名前のファイル(拡張子なし)を作成し、中身は自分が公開したいドメインを書きます(例: `maqz.example.com`)
+5. ビルド
+6. `.\pushAll.bat 'コミットコメント'` コミットコメントにはわかりやすいものに
+7. 確認してみる
 
 ### 画像の登録(圧縮)
 maqzでは、画像は原則縮小・圧縮することになっています。
