@@ -10,7 +10,7 @@ Webサイトの作り方を簡単に説明しようと思ったのですが、�
 まあどうやって調べればいいかは書いときますかね。もちろん無料です。
 
 とりあえずわからない用語や概念があれば、**[MDN](https://developer.mozilla.org/ja/)**か **[「分かりそう」で「分からない」でも「分かった」気になれるIT用語辞典](https://wa3.i-3-i.info/)**(以下:用語辞典)で調べる事をお勧めします。  
-たとえば「Webサイト」について調べると<[MDN](https://developer.mozilla.org/ja/docs/Learn/Getting_started_with_the_web/How_the_Web_works) / [用語辞典](https://wa3.i-3-i.info/word1544.html)>というようにとてもわかりやすく解説されています。  
+たとえば「Webサイト」について調べると【[MDN](https://developer.mozilla.org/ja/docs/Learn/Getting_started_with_the_web/How_the_Web_works) / [用語辞典](https://wa3.i-3-i.info/word1544.html)】というようにとてもわかりやすく解説されています。  
 用語辞典は概念や歴史がわかりやすく解説されており、そしてMDNはより実務的なことが書いてあります。
 
 とりあえず[MDNのこのページ](https://developer.mozilla.org/ja/docs/Learn/Getting_started_with_the_web)を上から順番にやっていってください。私的にはどの本よりもどの講座よりも良いと思います。
