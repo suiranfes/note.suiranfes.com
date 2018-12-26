@@ -56,19 +56,3 @@ block functions
               if(e.code === 'ENOENT') return false
           }
       }
-
-  block search_sidebar
-    -
-      function searchSidebar(pathe){
-        let searchin
-        if(pathe.dir == "") searchin = `${pathe.dir}sidebar.pug`
-        else searchin = `${pathe.dir}/sidebar.pug`
-        if(existFile(searchin)){
-          return searchin
-        } else {
-          // const uppath = path.parse(pathe.dir)
-          // searchSidebar(uppath)
-          return "pages/ja/sidebar.pug"
-        }
-      }
-

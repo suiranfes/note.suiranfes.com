@@ -2,12 +2,12 @@ git fetch
 cd pages
 git add --all
 git commit -a -m %1
-git push -u origin pages
+git push
 cd ../docs
 git add --all
 git commit -a -m %1
-git push -u origin master
+git push
 cd ..
 git add --all
 git commit -a -m %1
-git push -u origin src
+git push

@@ -3,8 +3,14 @@
 
   > .sidebar-inner
     position: sticky
+    padding: 1em
 
     .sidebarstyle-h1
       font-weight: 700
       padding: .25em
       background: $gray-200
+
+    .sidebarstyle-list
+      li
+        > a
+          @extend .py-1
