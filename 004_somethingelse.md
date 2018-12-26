@@ -26,3 +26,8 @@ prev: /003_howtomakewebsite/
 
 嬉しいことに、Webサイトなら関西の高校もごろごろしながら"視察"することができます。  
 [ここ](http://tsukukoma.bunkasai.info/)とか[ここ](http://urakosai.net/)とか[ここ](http://www.kaijofes.com/)とか[ここ](http://fest.nada-hs.jp/)とか[ここ](https://fes71.eikogakuen.com/)とか[ここ](http://seikofesta.official.jp/2018/home/)とか、いっぱいある
+
+## あとよくわからん資料
+~~1年~~2年前に変な資料を作ってたらしく、生きた情報があるかもしれないので貼っておく
+
+https://wiki.suiranfes.com/
