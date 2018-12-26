@@ -1,7 +1,6 @@
 ---
 title: はじめに
 description: アイサツ。アイサツは大事。この文書や、翠巒祭の基本的な説明。
-layout: index
 rank: 1
 next: /002_todos/
 ---

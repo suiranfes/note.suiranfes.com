@@ -1,7 +1,6 @@
 ---
 title: Web課の業務
 description: Web課として何をやるべきなのかを説明しましゅ。
-layout: index
 rank: 2
 prev: /001_atfirst/
 next: /003_howtomakewebsite/
