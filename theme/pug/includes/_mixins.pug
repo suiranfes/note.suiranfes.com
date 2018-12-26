@@ -49,30 +49,30 @@ mixin toc( headings, n, tag, cl)
 
 
 -
-  function pathME(e, pathf){
+  function pathME(e, pathf, self){
     if (!(e.meta.permalink.startsWith(pathf) && e.meta.permalink != '/404/')) return false
     
     const a = e.meta.permalink.split('/').length
     const b = pathf.split('/').length
-    if ($option.self) {
+    if (self) {
       return a == b || a == b + 1
     } else {
       return a == b + 1
     }
   }
-  function pathMFilter(pathf){
+  function pathMFilter(pathf, self){
     return pages.filter(function(e,i,a){
       if (typeof pathf === "string") {
-        return pathME(e, pathf)
+        return pathME(e, pathf, self)
       } else if (typeof pathf === "object" && Array.isArray(pathf) ){
         for (const c of pathf) {
-          if (pathME(e, c)) return true
+          if (pathME(e, c, self)) return true
         }
       }
     })
   }
-  function sortPages(pathf){
-    let bpages = pathMFilter(pathf)
+  function sortPages(pathf, self){
+    let bpages = pathMFilter(pathf, self)
     bpages.sort( (a, b) => { return ( a.meta.permalink > b.meta.permalink ) ? 1 : -1 } )
     bpages.sort( (a, b) => a.attributes.rank - b.attributes.rank )
     return bpages
@@ -80,7 +80,7 @@ mixin toc( headings, n, tag, cl)
 
 mixin lis_of_dir(pathf, $option)
   -
-    let bpages = sortPages(pathf)
+    let bpages = sortPages(pathf, $option.self)
   each rpage in bpages
     li
       a.d-block(href=`${site.url.path}${rpage.meta.permalink}` class=(rpage.meta.permalink == page.meta.permalink ? 'font-weight-bold' : ''))
