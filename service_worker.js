@@ -1,4 +1,4 @@
-/* workbox 2018-12-27T05:30:13.583Z */
+/* workbox 2018-12-27T06:52:52.353Z */
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 workbox.routing.registerRoute(
     /.*.(?:js|css|png|jpeg|jpg|svg|svgz|woff2)/,
