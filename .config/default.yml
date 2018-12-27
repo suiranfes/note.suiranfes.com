@@ -9,6 +9,7 @@ url:
 pages_src:
   path: "./pages/"
   src: "**/*.{html,htm,pug,md}"
+language: ja
 page_namingrule: name
 theme_color:
   primary: "#ffffff"
@@ -40,4 +41,5 @@ sidebar: true
 manifest:
   start_url: "/"
   display: standalone
+meta_pages: ['404', 'offline']
 sw: "js|css|png|jpeg|jpg|svg|svgz|woff2"
