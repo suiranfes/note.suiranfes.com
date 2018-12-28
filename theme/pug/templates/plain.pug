@@ -24,10 +24,13 @@ html(lang=site.language)
           *
       block canonical
         link(rel="canonical", href=page.meta.url.href)
+        if(page.attributes.amp)
+          link(rel="amphtml", href=`${page.meta.url.href}amp.html`)
       block seo
         meta(name="author" content=site.author)
         meta(name="generator" content="maqz")
-        meta(name="robots" content="noindex,follow")
+        if(page.attributes.noindex)
+          meta(name="robots" content="noindex,follow")
 
       block description
         meta(name="description", content=page.attributes.description)
@@ -84,8 +87,8 @@ html(lang=site.language)
 
       block js_head
 
-  body
-    #grid
+  body(class=(site.sidebar ? 'with-sidebar' : ''))
+    #grid(class=(site.sidebar ? 'with-sidebar' : ''))
       block wo_footer
         block nav
           #nav

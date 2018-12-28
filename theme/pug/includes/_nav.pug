@@ -3,8 +3,12 @@
 
 nav#mainnav.navbar.navbar-light.flex-row.p-0
   if(site.sidebar)
-    button.sidebar-toggler.d-block.d-md-none(aria-label="メニューを開く")
-      +fa("bars", "fas")
+    if(!isAmp)
+      button.sidebar-toggler.d-block.d-md-none(aria-label="メニューを開く")
+        +fa("bars", "fas")
+    else
+      button.hamburger(on='tap:sidebar.toggle' aria-label="メニューを開く")
+        +fa("bars", "fas")
   a(href=`${site.url.path}/`).navbar-brand.mx-5=site.short_name
 
 //-

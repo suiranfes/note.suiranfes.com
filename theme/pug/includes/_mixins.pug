@@ -1,4 +1,4 @@
-//- pug mixins
+//- pug mixins 文字列で読み込まれてルートで処理することもあるのでよろしくおねがいします
 
 mixin fa( $icon, $prefix, $option )
   -
@@ -21,66 +21,61 @@ mixin fa( $icon, $prefix, $option )
 mixin fa_fw( $icon, $prefix )
   +fa( $icon, $prefix, {classes: ['fa-fw']})
 
-mixin toc( headings, n, tag, cl)
+mixin toc(headings, n, tag, cl)
   -
     function lv(a, b, ht){
       let r = a - b
+      let ans = ''
       for(let j=0; r > j; j++){
-        o += ht
+        ans += ht
       }
+      return ans
     }
     let o = `<${tag} class="${cl} m-0 p-0">`
     for(let i = 0; headings.length > i; i++){
       let now = headings[i], prev
-      if (now.number < n)
-        continue
-      if (i == 0)
-        prev = {number: n}
-      else
-        prev = headings[i - 1]
-      if ( i == 0 || now.number > prev.number )
-        lv(now.number, prev.number, `<${tag} class="${cl}">`)
-      else if ( now.number < prev.number )
-        lv(prev.number, now.number, `</${tag}>`)
+      if (now.number < n) continue
+
+      if (i == 0) prev = {number: n}
+      else prev = headings[i - 1]
+
+      if ( i == 0 || now.number > prev.number ) {
+        o += lv(now.number, prev.number, `<li><${tag} class="${cl}">`)
+      } else if ( now.number < prev.number ) {
+        o += lv(prev.number, now.number, `</${tag}></li>`)
+      }
       o += `<li><a href="#${now.id}">${now.text}</a></li>`
     }
     o += `</${tag}>`
   != o
 
-
--
-  function pathME(e, pathf, self){
-    if (!(e.meta.permalink.startsWith(pathf) && !e.meta.isMetaPage)) return false
-    
-    const a = e.meta.permalink.split('/').length
-    const b = pathf.split('/').length
-    if (self) {
-      return a == b || a == b + 1
-    } else {
-      return a == b + 1
-    }
-  }
-  function pathMFilter(pathf, self){
-    return pages.filter(function(e,i,a){
-      if (typeof pathf === "string") {
-        return pathME(e, pathf, self)
-      } else if (typeof pathf === "object" && Array.isArray(pathf) ){
-        for (const c of pathf) {
-          if (pathME(e, c, self)) return true
-        }
-      }
-    })
-  }
-  function sortPages(pathf, self){
-    let bpages = pathMFilter(pathf, self)
-    bpages.sort( (a, b) => { return ( a.meta.permalink > b.meta.permalink ) ? 1 : -1 } )
-    bpages.sort( (a, b) => a.attributes.rank - b.attributes.rank )
-    return bpages
-  }
-
 mixin lis_of_dir(pathf, $option)
   -
-    let bpages = sortPages(pathf, $option.self)
+    function pathME(e, pathf){
+      if (!(e.meta.permalink.startsWith(pathf) && !e.meta.isMetaPage)) return false
+      
+      const a = e.meta.permalink.split('/').length
+      const b = pathf.split('/').length
+      if ($option.self) {
+        return a == b || a == b + 1
+      } else {
+        return a == b + 1
+      }
+    }
+    function pathMFilter(pathf){
+      return pages.filter(function(e,i,a){
+        if (typeof pathf === "string") {
+          return pathME(e, pathf)
+        } else if (typeof pathf === "object" && Array.isArray(pathf) ){
+          for (const c of pathf) {
+            if (pathME(e, c)) return true
+          }
+        }
+      })
+    }
+    let bpages = pathMFilter(pathf)
+    bpages.sort( (a, b) => { return ( a.meta.permalink > b.meta.permalink ) ? 1 : -1 } )
+    bpages.sort( (a, b) => a.attributes.rank - b.attributes.rank )
   each rpage in bpages
     li
       a.d-block(href=`${site.url.path}${rpage.meta.permalink}` class=(rpage.meta.permalink == page.meta.permalink ? 'font-weight-bold' : ''))
