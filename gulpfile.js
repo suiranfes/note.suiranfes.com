@@ -15,8 +15,6 @@ const glog = require('fancy-log')
 const colors = require('colors')
 const readyaml = require('js-yaml').safeLoad
 
-const fontawesome = require("@fortawesome/fontawesome-svg-core")
-fontawesome.library.add(require("@fortawesome/free-solid-svg-icons").fas, require("@fortawesome/free-regular-svg-icons").far, require("@fortawesome/free-brands-svg-icons").fab)
 $ = require('gulp-load-plugins')()
 
 // const exec = require('child_process').exec
@@ -151,7 +149,6 @@ gulp.task('config', () => {
     )
 })
 
-
 const cssDestpath = dests.root + '/assets/styles'
 const cssExtrprefix = 'extracted-'
 
@@ -163,38 +160,47 @@ gulp.task('css', (cb) => {
         $.postcss([
             require('postcss-sorting')(),
             require('autoprefixer')({ browsers: 'defaults' }),
-            require('postcss-extract-media-query')({
-                output: {
-                    path: cssDestpath,
-                    name: `${cssExtrprefix}[query].[ext]`
-                }
-            })
+            require('css-mqpacker')()
         ]),
-        $.rename('common.css'),
+        $.rename('main.css'),
         gulp.dest(cssDestpath)
     ], async (e) => {
         if(e) glog(colors.red("Error(css)\n" + e))
-        else glog(colors.green(`✔ assets/style/common.css`))
+        else glog(colors.green(`✔ assets/style/main.css`))
         cb()
     })
 })
 
-let extractedCsses
+gulp.task('js', (cb) => {
+    const webpackStream = require('webpack-stream')
+    const webpack = require('webpack')
+    const wpackconf = {
+        entry: ['./theme/js/main.ts'],
+        output: {
+            filename: "main.js",
+            publicPath: `${site.url.path}/assets/scripts/`
+        },
+        resolve: {
+            extensions: [".ts", ".tsx", ".js"],
+            modules: ["node_modules"]
+        },
+        module: {
+            rules: [
+                { test: /\.tsx?$/, loader: "ts-loader" }
+            ]
+        },
+        mode: 'production',
+    }
 
-gulp.task('register-csses', (cb) => {
-    const glob = promisify(require('glob'))
-    glob(`${argv._.some(v => v == 'pages') ? './docs/assets/styles' : cssDestpath}/${cssExtrprefix}*.css`)
-    .then(async files => {
-        const contents = await Promise.all(files.map((name, i, arr) => readFile(name, 'utf-8')))
-        extractedCsses = files.map((name, i, arr) => {
-            const res = /@media (.*?){/i.exec(contents[i])
-            return {
-                name: path.parse(name).name,
-                mquery: res ? res[1] : null
-            }
-        })
+    webpackStream(wpackconf, webpack)
+    .pipe(gulp.dest(dests.root + '/assets/scripts'))
+    .on('end',() => {
+        glog(colors.green(`✔ assets/main.js`))
+        cb()
     })
-    .then(cb)
+    .on('error', (err) => {
+        cb(err)
+    })
 })
 
 function searchSidebar(pathe){
@@ -262,8 +268,7 @@ gulp.task('pug', async () => {
         const puglocals = extend(true,
             {
                 page,
-                filters: pugfilters,
-                extractedCsses
+                filters: pugfilters
             }, base)
         let layout = page.attributes.layout
         let template = '', amptemplate = ''
@@ -331,64 +336,6 @@ gulp.task('pug', async () => {
     await Promise.all(streams)
     glog(colors.green(`✔ all html produced`))
     return void(0)
-})
-
-gulp.task('fa-css', (cb) => {
-    pump([
-        gulp.src('node_modules/@fortawesome/fontawesome-svg-core/styles.css'),
-        $.cleanCss(),
-        $.rename('fontawesome.min.css'),
-        gulp.dest(dests.root + '/assets')
-    ], (e) => {
-        if(e) glog(colors.red("Error(fa-css)\n" + e))
-        else glog(colors.green(`✔ assets/style.min.css`))
-        cb()
-    })
-})
-
-gulp.task('js', () => {
-    const webpackStream = require('webpack-stream')
-    const webpack = require('webpack')
-    let streams = []
-
-    const a = webpackStream(require("./webpack.config"), webpack)
-    streams.push(new Promise((res, rej) => {
-        a
-        .pipe($.terser(
-            {
-                ecma: 8,
-                compress: true,
-                output: {
-                    comments: false,
-                    beautify: false
-                }
-            }
-        ))
-        .pipe($.rename('main.min.js'))
-        .pipe(gulp.dest(dests.root + '/assets'))
-        .on('end',() => {
-            glog(colors.green(`✔ assets/main.min.js`))
-            res()
-        })
-        .on('error', (err) => {
-            rej(err)
-        })
-    }))
-    
-    streams.push(new Promise((res, rej) => {
-        a
-        .pipe($.rename('main.js'))
-        .pipe(gulp.dest(dests.root + '/assets'))
-        .on('end',() => {
-            glog(colors.green(`✔ assets/main.js`))
-            res()
-        })
-        .on('error', (err) => {
-            rej(err)
-        })
-    }))
-
-    return Promise.all(streams)
 })
 
 gulp.task('copy-docs', (cb) => {
@@ -557,6 +504,7 @@ gulp.task('make-sw', (cb) => {
         res =
 `/* workbox ${base.update.toJSON()} */
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+
 workbox.routing.registerRoute(
     /.*\.(?:${site.sw})/,
     workbox.strategies.staleWhileRevalidate({
@@ -573,6 +521,7 @@ workbox.routing.registerRoute(
         revision: '${base.update.getTime()}',
     }
 ]);
+workbox.skipWaiting();
 self.addEventListener('fetch', function(event) {
     event.respondWith(
         caches.match(event.request)
@@ -584,6 +533,10 @@ self.addEventListener('fetch', function(event) {
         })
     );
 });
+self.addEventListener('install', function(event) {
+    workbox.skipWaiting();
+    workbox.clientsClaim();
+})
 `
         }/*
         if(site.ga){
@@ -714,8 +667,12 @@ gulp.task('make-subfiles',
 
 gulp.task('core',
     gulp.series(
-        'css', 'register-csses',
-        gulp.parallel('js', 'fa-css', 'pug'),
+        gulp.parallel(
+            'config',
+            'css',
+            'pug',
+            'js'
+        ),
         gulp.parallel('copy-publish', 'make-subfiles'),
         'make-sw', 'last',
         (cb) => { cb() }
@@ -725,7 +682,6 @@ gulp.task('core',
 gulp.task('default',
     gulp.series(
         'register',
-        'config',
         'core',
         (cb) => { cb() }
     )
@@ -734,9 +690,7 @@ gulp.task('default',
 gulp.task('pages',
     gulp.series(
         'register',
-        'config',
-        'register-csses', 
-        'pug',
+        gulp.parallel('config', 'pug'),
         gulp.parallel('copy-prebuildFiles', 'make-subfiles'),
         'copy-f404',
         'copy-docs',
@@ -755,8 +709,8 @@ gulp.task('prebuild-files',
 
 gulp.task('core-with-pf',
     gulp.series(
-        'css', 'register-csses',
-        gulp.parallel('js', 'fa-css', 'pug', 'prebuild-files'),
+        'prebuild-files',
+        gulp.parallel('css', 'js', 'pug'),
         gulp.parallel('copy-publish', 'make-subfiles'),
         'make-sw', 'last',
         (cb) => { cb() }
@@ -795,7 +749,6 @@ gulp.task('connect', () => {
 gulp.task('server',
     gulp.series(
         'register',
-        'config',
         'core',
         (cb) => { cb() } 
     )
@@ -804,7 +757,6 @@ gulp.task('server',
 gulp.task('local-server',
     gulp.series(
         'register',
-        'config',
         'core',
         gulp.parallel('connect', 'watch'),
         (cb) => { cb() } 

@@ -1,8 +1,8 @@
 {
-  "name": "maqz_test",
+  "name": "sfes-note",
   "version": "1.0.0",
   "main": "docs/index.html",
-  "description": "maqzテストリポジトリ",
+  "description": "note",
   "scripts": {
     "build-files": "gulp prebuild-files",
     "build2deploy": "gulp",
@@ -11,29 +11,25 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tamaina/maqz"
+    "url": "git+https://github.com/suiranfes/note.suiranfes.com"
   },
   "author": "tamaina <tamaina@hotmail.co.jp> (https://misskey.xyz/@aqz)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tamaina/maqz/issues"
+    "url": "https://github.com/suiranfes/note.suiranfes.com/issues"
   },
-  "homepage": "https://tamaina.github.io/maqz/",
+  "homepage": "https://note.suiranfes.com/",
   "devDependencies": {
-    "@babel/core": "^7.2.0",
-    "@babel/plugin-transform-strict-mode": "^7.2.0",
-    "@babel/polyfill": "^7.0.0",
-    "@babel/preset-env": "^7.2.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.8",
     "@fortawesome/free-brands-svg-icons": "^5.6.0",
     "@fortawesome/free-regular-svg-icons": "^5.5.0",
     "@fortawesome/free-solid-svg-icons": "^5.6.1",
-    "babel-loader": "^8.0.4",
-    "babel-plugin-transform-remove-strict-mode": "0.0.2",
+    "@types/ua-parser-js": "^0.7.32",
     "bootstrap": "^4.1.3",
     "cafy": "^12.0.0",
     "cheerio": "^1.0.0-rc.2",
     "clean-css": "^4.2.1",
+    "css-mqpacker": "^7.0.0",
     "del": "^3.0.0",
     "download": "^7.1.0",
     "extend": "^3.0.2",
@@ -77,7 +73,6 @@
     "node-sass": "^4.10.0",
     "numeral": "^2.0.6",
     "pjax-api": "^3.25.0",
-    "postcss-extract-media-query": "^1.1.0",
     "postcss-sorting": "^4.0.1",
     "pug": "^2.0.3",
     "pump": "^3.0.0",
@@ -85,6 +80,8 @@
     "request": "^2.88.0",
     "semver": "^5.6.0",
     "terser": "^3.11.0",
+    "ts-loader": "^5.3.2",
+    "typescript": "^3.2.2",
     "ua-parser-js": "^0.7.19",
     "webpack": "^4.27.1",
     "webpack-stream": "^5.2.1"
