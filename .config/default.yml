@@ -3,8 +3,8 @@ short_name: "うぇぶかのーと"
 description: "第66回チーフが翠巒祭総務班Web課について色々書き連ねます。"
 author: "Chiefs of web partment"
 url:
-  path: ""
-  host: "note.suiranfes.com"
+  path: "/note.suiranfes.com"
+  host: "suiranfes.github.io"
   scheme: https
 pages_src:
   path: "./pages/"
