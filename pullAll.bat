@@ -1,16 +1,16 @@
 git fetch
 
-echo 'umerge conflictv‚µ‚½ê‡‚Í‹£‡‚ğ‰ğŒˆ‚µ‚Ü‚µ‚å‚¤B'
+echo 'ï¿½umerge conflictï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ê‡ï¿½Í‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½å‚¤ï¿½B'
 
 git add --all
 git commit -a -m %1
-git pull -u origin pages
+git pull origin pages
 cd pages
 git add --all
 git commit -a -m %1
-git pull -u origin pages
+git pull origin pages
 cd ../docs
 git add --all
 git commit -a -m %1
-git pull -u origin master
+git pull origin master
 cd ..
